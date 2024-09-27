@@ -1,15 +1,17 @@
 <template>
-  <ObjectComponent></ObjectComponent>
+  <div>
+    <nav>
+      <router-link to="/">Hello World</router-link>
+      <router-link to="/loop">Loop</router-link>
+    </nav>
+  </div>
+
+  <router-view></router-view>
 </template>
 
 <script>
-import ObjectComponent from './components/ObjectComponent.vue';
-
 export default {
-  name: 'App',
-  components: {
-    ObjectComponent
-  }
+  name: 'App'
 }
 </script>
 
