@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import LoopComponent from "./components/LoopComponent.vue";
+import FetchNaruto from "./components/FetchNaruto.vue";
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         path: '/loop',
         name: 'Loop',
         component: LoopComponent
+    },
+    {
+        path: '/naruto',
+        name: 'Naruto',
+        component: FetchNaruto
     }
 ];
 
