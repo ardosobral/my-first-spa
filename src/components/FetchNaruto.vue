@@ -1,24 +1,44 @@
 <template>
     <div class="container">
         <div class="row">
-            <!-- Exibe uma mensagem de carregamento enquanto os dados estão sendo obtidos -->
+            <!-- Exibe uma mensagem enquanto aguarda dados da api -->
             <div v-if="loading" class="col-12 text-center">
-                <p>Loading...</p>
+                <p>Carregando...</p>
             </div>
 
-            <!-- Exibe uma mensagem de erro caso a requisição falhe -->
+            <!-- Exibe uma mensagem de erro caso a api falhe -->
             <div v-if="error" class="col-12 text-center">
-                <p>Error loading data.</p>
+                <p>Ops, algum erro aconteceu ;(</p>
             </div>
 
-            <!-- Exibe os personagens em uma grade -->
-            <div v-else class="col-md-4" v-for="character in characters" :key="character.id">
+            <!-- Exibe lista de personagens -->
+            <div v-else v-for="character in characters" :key="character.id" class="col-md-4">
                 <div class="card mb-4">
-                    <img :src="character.images[0]" class="card-img-top" alt="Character Image">
+                    <img :src="character.images[0]" class="card-img-top">
                     <div class="card-body">
                         <h5 class="card-title">{{ character.name }}</h5>
+                        <router-link :to="{ name: 'NarutoDetail', params: { id: character.id } }">
+                            Detalhes
+                        </router-link>
+                        <div class="dropdown">
+                            <button 
+                                class="btn btn-secondary dropdown-toggle" 
+                                type="button" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                            >
+                                Jutsus e técnicas
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li v-for="jutsu in character.jutsu" :key="jutsu.id">
+                                    <a class="dropdown-item" href="#">{{ jutsu }}</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                
             </div>
         </div>
     </div>
@@ -28,46 +48,37 @@
 export default {
     data() {
         return {
-            characters: [], 
-            loading: true,  
-            error: false    
-        };
+            characters: [],
+            loading: true,
+            error: false
+        }
     },
     methods: {
-        // Método para buscar os dados da API
-        fetchCharacters() {
+        fetchNaruto() {
             fetch('https://dattebayo-api.onrender.com/characters')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error("Network error");
                     }
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data.characters);
                     
-                    this.characters = data.characters;  
-                    this.loading = false;    
+                    this.characters = data.characters;
+                    console.log(data)
+                    this.loading = false;
                 })
                 .catch(() => {
-                    this.error = true;       
-                    this.loading = false;    
-                });
+                    this.error = true;
+                    this.loading = false;
+                })
         }
     },
     mounted() {
-        this.fetchCharacters();
+        this.fetchNaruto();
     }
-};
+}
 </script>
 
-<style scoped>
-.card {
-    text-align: center;
-}
-
-.card-img-top {
-    max-height: 200px;
-    object-fit: cover;
-}
+<style>
 </style>
